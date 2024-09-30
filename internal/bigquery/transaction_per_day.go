@@ -23,13 +23,13 @@ func dataMapToArray(datamap *uploader.DataMap) []*TransactionsPerDay {
 	var ret []*TransactionsPerDay
 	for day, dayMap := range *datamap {
 		for projectID, projectMap := range dayMap {
-			for eventType, eventData := range projectMap {
+			for eventType, eventDatum := range projectMap {
 				ret = append(ret, &TransactionsPerDay{
 					Date:                day,
 					ProjectID:           projectID,
 					EventType:           eventType,
-					NumberOfTransaction: eventData.NumberOfTransaction,
-					VolumeUSD:           eventData.VolumeUSD,
+					NumberOfTransaction: eventDatum.NumberOfTransaction,
+					VolumeUSD:           eventDatum.VolumeUSD,
 				})
 			}
 		}
@@ -37,7 +37,7 @@ func dataMapToArray(datamap *uploader.DataMap) []*TransactionsPerDay {
 	return ret
 }
 
-func (c *Client) InsertFromDataMap(ctx context.Context, datamap *uploader.DataMap) error {
+func (c *Client) InsertTransactionsPerDayFromDataMap(ctx context.Context, datamap *uploader.DataMap) error {
 	inserter := c.transactionsPerDaysTable.Inserter()
 	inserter.TableTemplateSuffix = strconv.FormatInt(time.Now().Unix(), 10)
 	if err := inserter.Put(ctx, dataMapToArray(datamap)); err != nil {

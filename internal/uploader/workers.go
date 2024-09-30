@@ -38,7 +38,6 @@ func prepareWorkersAndAggregator(ctx context.Context, workerNumber uint, stopWor
 			go worker(ctx, &wg, stopWorkers, recordsChannel, resultChannel)
 		}
 		wg.Wait()
-		fmt.Println("all work done")
 		close(workersDone)
 	}()
 	go aggregator(ctx, workersDone, resultChannel, finalResultChannel)
@@ -105,6 +104,8 @@ func worker(ctx context.Context, wg *sync.WaitGroup, stopWorkers chan struct{}, 
 			}
 		case <-stopWorkers:
 			return
+		case <-ctx.Done():
+			return
 		}
 	}
 }
@@ -130,6 +131,8 @@ main_loop:
 			dataMap.Insert(r)
 		case <-workersDone:
 			break main_loop
+		case <-ctx.Done():
+			return
 		}
 	}
 	// keep reading until no more data to ingest

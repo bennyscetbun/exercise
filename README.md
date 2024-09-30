@@ -30,3 +30,12 @@ This document describes the environment variables used by `main`.
 # Big query
 ## Schema
 Schema is code based in `./internal/bigquery`
+
+## Queries
+
+You can get the number of transaction and the volume per day and project with the following query
+```
+SELECT `date`, project_id, SUM(number_of_transactions), SUM(volume_usd)
+FROM `carbide-sensor-436519-q4.youpi_banane.transactions_per_days`
+GROUP BY `date`, project_id`
+```

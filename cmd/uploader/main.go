@@ -74,7 +74,7 @@ func main() {
 		return
 	}
 
-	if err := bigqueryClient.InsertFromDataMap(ctx, dataMap); err != nil {
+	if err := bigqueryClient.InsertTransactionsPerDayFromDataMap(ctx, dataMap); err != nil {
 		log.Fatalln(tracerr.Sprint(err))
 	}
 }
