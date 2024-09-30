@@ -1,0 +1,30 @@
+name: CI/CD Pipeline
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cache Docker images.
+        uses: ScribeMD/docker-cache@0.3.6
+        with:
+          key: docker-${{ runner.os }}
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22.x'
+      - name: Install dependencies
+        working-directory: ./
+        run: go mod download
+      - name: Build
+        working-directory: ./
+        run: go build -v ./...
+      - name: Test with the Go CLI
+        working-directory: ./
+        run: go test ./...
+      - name: Build Docker image
+        working-directory: ./
+        run: docker build -f build/docker/dockerfile -t my-app .

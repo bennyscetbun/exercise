@@ -1,0 +1,4 @@
+- Add a system to avoid reprocessing the same file
+- Manage temporary errors
+- Add a bigquery migration system
+- Use credential files or not for gcp operations
