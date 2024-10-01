@@ -8,6 +8,14 @@ To use this tool, you will need:
 * A BigQuery dataset
 * A JSON file with credentials to access GCP storage and BigQuery for reading and writing.
 
+# How to use
+
+- Set all the mandatory environment variable.
+- Put the csv file in the gcp storage bucket
+- run with:
+
+        go run ./cmd/uploader name_of_the_csv_file_in_the_bucket
+
 # Environment Variables
 
 This document describes the environment variables used by `main`.
@@ -39,3 +47,4 @@ SELECT `date`, project_id, SUM(number_of_transactions), SUM(volume_usd)
 FROM `carbide-sensor-436519-q4.youpi_banane.transactions_per_days`
 GROUP BY `date`, project_id`
 ```
+
